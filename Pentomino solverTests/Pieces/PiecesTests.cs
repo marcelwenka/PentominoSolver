@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Pentomino_solver.Pieces;
+using PentominoSolver.Pentominos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pentomino_solver.Pieces.Tests
+namespace PentominoSolver.Pentominos.Tests
 {
     [TestClass()]
     public class PiecesTests

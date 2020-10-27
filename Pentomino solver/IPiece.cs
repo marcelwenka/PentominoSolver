@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pentomino_solver
+namespace PentominoSolver
 {
     public interface IPiece
     {
         int[][,] Orientations { get; }
-
-        IPiece Clone();
     }
 }

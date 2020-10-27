@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pentomino_solver.Pieces
+namespace PentominoSolver.Pentominos
 {
-    public class Pp : IPiece
+    public class Pp : IPentomino
     {
         public int[][,] Orientations
         {
@@ -39,6 +39,8 @@ namespace Pentomino_solver.Pieces
                 };
             }
         }
+
+        public List<(int, List<IPiece>)> Cuts => new List<(int, List<IPiece>)>();
 
         public IPiece Clone()
         {

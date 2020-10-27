@@ -39,6 +39,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,25 +50,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Piece.cs" />
-    <Compile Include="Pieces\Zp.cs" />
-    <Compile Include="Pieces\Z.cs" />
-    <Compile Include="Pieces\Yp.cs" />
-    <Compile Include="Pieces\Y.cs" />
-    <Compile Include="Pieces\X.cs" />
-    <Compile Include="Pieces\W.cs" />
-    <Compile Include="Pieces\V.cs" />
-    <Compile Include="Pieces\U.cs" />
-    <Compile Include="Pieces\T.cs" />
-    <Compile Include="Pieces\Pp.cs" />
-    <Compile Include="Pieces\P.cs" />
-    <Compile Include="Pieces\Np.cs" />
-    <Compile Include="Pieces\N.cs" />
-    <Compile Include="Pieces\Lp.cs" />
-    <Compile Include="Pieces\L.cs" />
-    <Compile Include="Pieces\I.cs" />
-    <Compile Include="Pieces\Fp.cs" />
-    <Compile Include="Pieces\F.cs" />
+    <Compile Include="IPentomino.cs" />
+    <Compile Include="Pieces\Monomino.cs" />
+    <Compile Include="HeuristicAlgorithm.cs" />
+    <Compile Include="ExactAlgorithm.cs" />
+    <Compile Include="IPiece.cs" />
+    <Compile Include="Pieces\Domino.cs" />
+    <Compile Include="Pieces\Trominos\I.cs" />
+    <Compile Include="Pieces\Trominos\L.cs" />
+    <Compile Include="Pieces\Tetrominos\O.cs" />
+    <Compile Include="Pieces\Tetrominos\I.cs" />
+    <Compile Include="Pieces\Tetrominos\T.cs" />
+    <Compile Include="Pieces\Tetrominos\L.cs" />
+    <Compile Include="Pieces\Tetrominos\J.cs" />
+    <Compile Include="Pieces\Tetrominos\S.cs" />
+    <Compile Include="Pieces\Tetrominos\Z.cs" />
+    <Compile Include="Pieces\Pentominos\Zp.cs" />
+    <Compile Include="Pieces\Pentominos\Z.cs" />
+    <Compile Include="Pieces\Pentominos\Yp.cs" />
+    <Compile Include="Pieces\Pentominos\Y.cs" />
+    <Compile Include="Pieces\Pentominos\X.cs" />
+    <Compile Include="Pieces\Pentominos\W.cs" />
+    <Compile Include="Pieces\Pentominos\V.cs" />
+    <Compile Include="Pieces\Pentominos\U.cs" />
+    <Compile Include="Pieces\Pentominos\T.cs" />
+    <Compile Include="Pieces\Pentominos\Pp.cs" />
+    <Compile Include="Pieces\Pentominos\P.cs" />
+    <Compile Include="Pieces\Pentominos\Np.cs" />
+    <Compile Include="Pieces\Pentominos\N.cs" />
+    <Compile Include="Pieces\Pentominos\Lp.cs" />
+    <Compile Include="Pieces\Pentominos\L.cs" />
+    <Compile Include="Pieces\Pentominos\I.cs" />
+    <Compile Include="Pieces\Pentominos\Fp.cs" />
+    <Compile Include="Pieces\Pentominos\F.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

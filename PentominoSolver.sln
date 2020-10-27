@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pentomino solver", "Pentomino solver\Pentomino solver.csproj", "{3D31BECF-9A0F-449F-A5D3-E42A72253042}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PentominoSolver", "Pentomino solver\PentominoSolver.csproj", "{3D31BECF-9A0F-449F-A5D3-E42A72253042}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pentomino solverTests", "Pentomino solverTests\Pentomino solverTests.csproj", "{ADE88CD7-273B-4C5E-BF99-CABD393B9463}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PentominoSolverTests", "Pentomino solverTests\PentominoSolverTests.csproj", "{ADE88CD7-273B-4C5E-BF99-CABD393B9463}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

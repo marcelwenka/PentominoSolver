@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pentomino_solver.Pieces
+namespace PentominoSolver.Tetrominos
 {
-    public class Z : IPiece
+    public class I : IPiece
     {
         public int[][,] Orientations
         {
@@ -14,17 +14,16 @@ namespace Pentomino_solver.Pieces
             {
                 return new int[2][,]
                 {
-                    new int[3,3]
+                    new int[4,1]
                     {
-                        { 1, 1, 0 },
-                        { 0, 1, 0 },
-                        { 0, 1, 1 }
+                        { 1 },
+                        { 1 },
+                        { 1 },
+                        { 1 }
                     },
-                    new int[3,3]
+                    new int[1,4]
                     {
-                        { 0, 0, 1 },
-                        { 1, 1, 1 },
-                        { 1, 0, 0 }
+                        { 1, 1, 1, 1 }
                     }
                 };
             }
@@ -32,7 +31,7 @@ namespace Pentomino_solver.Pieces
 
         public IPiece Clone()
         {
-            return new Z();
+            return new I();
         }
     }
 }

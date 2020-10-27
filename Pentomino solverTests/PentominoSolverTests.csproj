@@ -63,9 +63,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pentomino solver\Pentomino solver.csproj">
+    <ProjectReference Include="..\Pentomino solver\PentominoSolver.csproj">
       <Project>{3D31BECF-9A0F-449F-A5D3-E42A72253042}</Project>
-      <Name>Pentomino solver</Name>
+      <Name>PentominoSolver</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
