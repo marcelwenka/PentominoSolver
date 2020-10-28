@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3D31BECF-9A0F-449F-A5D3-E42A72253042}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Pentomino_solver</RootNamespace>
-    <AssemblyName>Pentomino solver</AssemblyName>
+    <RootNamespace>PentominoSolver</RootNamespace>
+    <AssemblyName>PentominoSolver</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SolvingHelper.cs" />
     <Compile Include="IPentomino.cs" />
     <Compile Include="Pieces\Monomino.cs" />
     <Compile Include="HeuristicAlgorithm.cs" />

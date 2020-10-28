@@ -12,31 +12,10 @@ namespace PentominoSolver.Pentominos.Tests
     public class PiecesTests
     {
         [TestMethod()]
-        public void OrientationsTest()
+        [DynamicData(nameof(GetTestData))]
+        public void OrientationsTest(List<IPiece> pieces)
         {
-            var allPieces = new List<IPiece>
-            {
-                new F(),
-                new Fp(),
-                new I(),
-                new L(),
-                new Lp(),
-                new N(),
-                new Np(),
-                new P(),
-                new Pp(),
-                new T(),
-                new U(),
-                new V(),
-                new W(),
-                new X(),
-                new Y(),
-                new Yp(),
-                new Z(),
-                new Zp()
-            };
-
-            var allOrientations = allPieces
+            var allOrientations = pieces
                 .SelectMany(x => x.Orientations)
                 .ToList();
 
@@ -55,36 +34,48 @@ namespace PentominoSolver.Pentominos.Tests
         }
 
         [TestMethod()]
-        public void AreasTest()
+        [DynamicData(nameof(GetTestData))]
+        public void AreasTest(List<IPiece> pieces)
         {
-            var allPieces = new List<IPiece>
-            {
-                new F(),
-                new Fp(),
-                new I(),
-                new L(),
-                new Lp(),
-                new N(),
-                new Np(),
-                new P(),
-                new Pp(),
-                new T(),
-                new U(),
-                new V(),
-                new W(),
-                new X(),
-                new Y(),
-                new Yp(),
-                new Z(),
-                new Zp()
-            };
-
-            var allOrientations = allPieces
+            var allOrientations = pieces
                 .SelectMany(x => x.Orientations)
                 .ToList();
 
             foreach (var orientation in allOrientations)
                 Assert.AreEqual(5, orientation.Cast<int>().Sum());
+        }
+
+        public static IEnumerable<object[]> GetTestData
+        {
+            get
+            {
+                return new[]
+                {
+                    new object[] {
+                        new List<IPiece>
+                        {
+                            new F(),
+                            new Fp(),
+                            new I(),
+                            new L(),
+                            new Lp(),
+                            new N(),
+                            new Np(),
+                            new P(),
+                            new Pp(),
+                            new T(),
+                            new U(),
+                            new V(),
+                            new W(),
+                            new X(),
+                            new Y(),
+                            new Yp(),
+                            new Z(),
+                            new Zp()
+                        }
+                    }
+                };
+            }
         }
     }
 }

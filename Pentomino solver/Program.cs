@@ -33,28 +33,46 @@ namespace PentominoSolver
         {
             var pieces = GetPieces();
 
-            var (n, rectangle) = ExactAlgorithm.Solve(pieces);
+            string input = "";
+            while (input != "e" && input != "h")
+            {
+                Console.WriteLine("Type e to use the exact algorithm or h to use the heuristic algorithm.");
+                input = Console.ReadLine();
+            }
+
+            int n = 0;
+            int[,] rectangle = null;
+
+            if (input == "e")
+                (n, rectangle) = ExactAlgorithm.Solve(pieces);
+            else if (input == "h")
+                (n, rectangle) = HeuristicAlgorithm.Solve(pieces);
 
             if (rectangle != null)
             {
                 Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {n}. First solution:");
-                var colors = Enum.GetValues(typeof(ConsoleColor)).OfType<ConsoleColor>().Except(new List<ConsoleColor>() { ConsoleColor.Black }).ToList();
-                for (int i = 0; i < rectangle.GetLength(0); i++)
-                {
-                    for (int j = 0; j < rectangle.GetLength(1); j++)
-                    {
-                        Console.ForegroundColor = colors[rectangle[i, j] % colors.Count()];
-                        Console.Write("x ");
-                    }
-                    Console.WriteLine();
-                }
+                PrintSolution(rectangle);
             }
             else
             {
-                Console.WriteLine("There are no solutions");
+                Console.WriteLine("There are no solutions.");
             }
 
             Console.ReadKey();
+        }
+
+        private static void PrintSolution(int[,] rectangle)
+        {
+            var colors = Enum.GetValues(typeof(ConsoleColor)).OfType<ConsoleColor>().Except(new List<ConsoleColor>() { ConsoleColor.Black }).ToList();
+            for (int i = 0; i < rectangle.GetLength(0); i++)
+            {
+                for (int j = 0; j < rectangle.GetLength(1); j++)
+                {
+                    Console.ForegroundColor = colors[rectangle[i, j] % colors.Count()];
+                    Console.Write("x ");
+                }
+                Console.WriteLine();
+            }
         }
 
         private static List<IPentomino> GetPieces()
@@ -62,12 +80,14 @@ namespace PentominoSolver
             while (true)
             {
                 Console.WriteLine("Specify the number of pieces to generate or the number of individual pieces (delimited with commas):");
+
                 var input = Console.ReadLine();
                 var numbers = input.Split(',');
+
                 if (numbers.Length == 18)
                 {
-                    var error = false;
                     var pieces = new List<IPentomino>();
+
                     for (int i = 0; i < 18; i++)
                     {
                         if (int.TryParse(numbers[i], out var number) && number >= 0)
@@ -77,14 +97,15 @@ namespace PentominoSolver
                         }
                         else
                         {
-                            error = true;
+                            pieces.Clear();
                             break;
                         }
                     }
-                    if (!error)
+
+                    if (pieces.Count >= 1)
                         return pieces;
                 }
-                else if (int.TryParse(input, out var count) && count >= 0)
+                else if (int.TryParse(input, out var count) && count >= 1)
                 {
                     return GeneratePieces(count);
                 }
