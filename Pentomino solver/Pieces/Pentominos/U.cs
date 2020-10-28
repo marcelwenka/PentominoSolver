@@ -40,7 +40,87 @@ namespace PentominoSolver.Pentominos
             }
         }
 
-        public List<(int, List<IPiece>)> Cuts => new List<(int, List<IPiece>)>();
+        public List<(int, List<IPiece>)> Cuts
+        {
+            get
+            {
+                return new List<(int, List<IPiece>)>()
+                {
+                    (
+                        1,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Tetrominos.L()
+                        }
+                    ),
+                    (
+                        1,
+                        new List<IPiece>()
+                        {
+                            new Domino(),
+                            new Trominos.L()
+                        }
+                    ),
+                    (
+                        1,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Tetrominos.J()
+                        }
+                    ),
+                    (
+                        2,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Trominos.L()
+                        }
+                    ),
+                    (
+                        2,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Domino(),
+                            new Domino()
+                        }
+                    ),
+                    (
+                        2,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Trominos.I()
+                        }
+                    ),
+                    (
+                        3,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino(),
+                            new Domino()
+                        }
+                    ),
+                    (
+                        4,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino()
+                        }
+                    )
+                };
+            }
+        }
 
         public IPiece Clone()
         {
