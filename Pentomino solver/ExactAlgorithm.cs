@@ -14,11 +14,11 @@ namespace PentominoSolver
 
             while (true)
             {
-                var tempMatrix = new List<int[]>();
                 var currentPiecesCombinations = GeneratePiecesWithCuts(pentominos, cutLength);
 
                 foreach (var currentPiecesCombination in currentPiecesCombinations)
                 {
+                    var tempMatrix = new List<int[]>();
                     for (int i = 0; i < currentPiecesCombination.Count; i++)
                         tempMatrix.AddRange(CreateRows(currentPiecesCombination, rectangle, i));
 
@@ -63,19 +63,21 @@ namespace PentominoSolver
             if (pentominoIndex == pentominos.Count())
             {
                 if (currentCutLength == targetCutLength)
-                    solutions.Add(pieces);
+                    solutions.Add(new List<IPiece>(pieces));
 
                 return;
             }
+
+            pieces.Add(pentominos[pentominoIndex]);
+            GeneratePiecesWithCuts(pentominos, solutions, pieces, targetCutLength, pentominoIndex + 1, currentCutLength);
+            pieces.RemoveAt(pieces.Count() - 1);
 
             foreach (var cut in pentominos[pentominoIndex].Cuts)
             {
                 if (currentCutLength + cut.Item1 <= targetCutLength)
                 {
                     pieces.AddRange(cut.Item2);
-
                     GeneratePiecesWithCuts(pentominos, solutions, pieces, targetCutLength, pentominoIndex + 1, currentCutLength + cut.Item1);
-
                     pieces = pieces.GetRange(0, pieces.Count() - cut.Item2.Count());
                 }
             }
