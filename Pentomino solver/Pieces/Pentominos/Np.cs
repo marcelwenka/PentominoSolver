@@ -102,15 +102,6 @@ namespace PentominoSolver.Pentominos
                         2,
                         new List<IPiece>()
                         {
-                            new Trominos.L(),
-                            new Monomino(),
-                            new Monomino()
-                        }
-                    ),
-                    (
-                        2,
-                        new List<IPiece>()
-                        {
                             new Domino(),
                             new Domino(),
                             new Monomino()
@@ -130,6 +121,7 @@ namespace PentominoSolver.Pentominos
                         4,
                         new List<IPiece>()
                         {
+                            new Monomino(),
                             new Monomino(),
                             new Monomino(),
                             new Monomino(),

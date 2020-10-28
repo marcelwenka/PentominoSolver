@@ -61,7 +61,7 @@ namespace PentominoSolver.Pentominos
                         new List<IPiece>()
                         {
                             new Monomino(),
-                            new Tetrominos.J()
+                            new Tetrominos.L()
                         }
                     ),
                     (
