@@ -92,7 +92,7 @@ namespace PentominoSolver
                 {
                     pieces.AddRange(piece.Cuts[cutIndex].Pieces);
                     GeneratePiecesWithCuts(pentomino, solutions, pieces, pentominoIndex + 1, cutIndex, targetCutLength, currentCutLength + piece.Cuts[cutIndex].CutLength);
-                    pieces = pieces.GetRange(0, pieces.Count() - piece.Cuts[cutIndex].Pieces.Count());
+                    pieces.RemoveRange(pieces.Count - piece.Cuts[cutIndex].Pieces.Count, piece.Cuts[cutIndex].Pieces.Count);
                 }
             }
         }
