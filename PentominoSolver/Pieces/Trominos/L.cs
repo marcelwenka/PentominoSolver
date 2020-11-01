@@ -38,9 +38,6 @@ namespace PentominoSolver.Trominos
             }
         }
 
-        public IPiece Clone()
-        {
-            return new L();
-        }
+        public string Type => "Tromino.L";
     }
 }

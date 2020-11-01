@@ -23,9 +23,6 @@ namespace PentominoSolver.Tetrominos
             }
         }
 
-        public IPiece Clone()
-        {
-            return new O();
-        }
+        public string Type => "Tetromino.O";
     }
 }

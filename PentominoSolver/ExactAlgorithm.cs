@@ -53,13 +53,22 @@ namespace PentominoSolver
         private static List<List<IPiece>> GeneratePiecesWithCuts(List<IPentomino> pentominos, int targetCutLength)
         {
             List<List<IPiece>> solutions = new List<List<IPiece>>();
-            GeneratePiecesWithCuts(pentominos, solutions, new List<IPiece>(), targetCutLength, 0, 0);
+            var pentominosQuantities = new LinkedList<(IPentomino, int)>(pentominos
+                .GroupBy(x => x.Type)
+                .Select(x => (x.First(), x.Count())));
+            GeneratePiecesWithCuts(pentominosQuantities.First, solutions, new List<IPiece>(), 0, -1, targetCutLength, 0);
             return solutions;
         }
 
-        private static void GeneratePiecesWithCuts(List<IPentomino> pentominos, List<List<IPiece>> solutions, List<IPiece> pieces, int targetCutLength, int pentominoIndex, int currentCutLength)
+        private static void GeneratePiecesWithCuts(LinkedListNode<(IPentomino Piece, int Quantity)> pentomino, List<List<IPiece>> solutions, List<IPiece> pieces, int pentominoIndex, int cutIndex, int targetCutLength, int currentCutLength)
         {
-            if (pentominoIndex == pentominos.Count())
+            if (pentominoIndex == pentomino.Value.Quantity)
+            {
+                pentomino = pentomino.Next;
+                pentominoIndex = 0;
+                cutIndex = -1;
+            }
+            if (pentomino == null)
             {
                 if (currentCutLength == targetCutLength)
                     solutions.Add(new List<IPiece>(pieces));
@@ -67,17 +76,23 @@ namespace PentominoSolver
                 return;
             }
 
-            pieces.Add(pentominos[pentominoIndex]);
-            GeneratePiecesWithCuts(pentominos, solutions, pieces, targetCutLength, pentominoIndex + 1, currentCutLength);
-            pieces.RemoveAt(pieces.Count() - 1);
+            var piece = pentomino.Value.Piece;
 
-            foreach (var cut in pentominos[pentominoIndex].Cuts)
+            if (cutIndex == -1)
             {
-                if (currentCutLength + cut.Item1 <= targetCutLength)
+                pieces.Add(piece);
+                GeneratePiecesWithCuts(pentomino, solutions, pieces, pentominoIndex + 1, cutIndex, targetCutLength, currentCutLength);
+                pieces.RemoveAt(pieces.Count - 1);
+                cutIndex++;
+            }
+
+            for (; cutIndex < piece.Cuts.Count; cutIndex++)
+            {
+                if (currentCutLength + piece.Cuts[cutIndex].CutLength <= targetCutLength)
                 {
-                    pieces.AddRange(cut.Item2);
-                    GeneratePiecesWithCuts(pentominos, solutions, pieces, targetCutLength, pentominoIndex + 1, currentCutLength + cut.Item1);
-                    pieces = pieces.GetRange(0, pieces.Count() - cut.Item2.Count());
+                    pieces.AddRange(piece.Cuts[cutIndex].Pieces);
+                    GeneratePiecesWithCuts(pentomino, solutions, pieces, pentominoIndex + 1, cutIndex, targetCutLength, currentCutLength + piece.Cuts[cutIndex].CutLength);
+                    pieces = pieces.GetRange(0, pieces.Count() - piece.Cuts[cutIndex].Pieces.Count());
                 }
             }
         }

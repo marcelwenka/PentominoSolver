@@ -27,9 +27,6 @@ namespace PentominoSolver
             }
         }
 
-        public IPiece Clone()
-        {
-            return new Domino();
-        }
+        public string Type => "Domino";
     }
 }

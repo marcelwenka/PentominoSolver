@@ -22,9 +22,6 @@ namespace PentominoSolver
             }
         }
 
-        public IPiece Clone()
-        {
-            return new Monomino();
-        }
+        public string Type => "Monomino";
     }
 }

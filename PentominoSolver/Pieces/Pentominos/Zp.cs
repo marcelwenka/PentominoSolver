@@ -104,9 +104,7 @@ namespace PentominoSolver.Pentominos
                 };
             }
         }
-        public IPiece Clone()
-        {
-            return new Zp();
-        }
+
+        public string Type => "Pentomino.Zp";
     }
 }

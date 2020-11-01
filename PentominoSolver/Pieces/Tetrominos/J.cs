@@ -40,9 +40,6 @@ namespace PentominoSolver.Tetrominos
             }
         }
 
-        public IPiece Clone()
-        {
-            return new J();
-        }
+        public string Type => "Tetromino.J";
     }
 }

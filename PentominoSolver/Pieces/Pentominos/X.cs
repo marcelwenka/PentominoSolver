@@ -80,9 +80,7 @@ namespace PentominoSolver.Pentominos
                 };
             }
         }
-        public IPiece Clone()
-        {
-            return new X();
-        }
+
+        public string Type => "Pentomino.X";
     }
 }

@@ -131,9 +131,7 @@ namespace PentominoSolver.Pentominos
                 };
             }
         }
-        public IPiece Clone()
-        {
-            return new Y();
-        }
+
+        public string Type => "Pentomino.Y";
     }
 }

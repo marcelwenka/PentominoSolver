@@ -1,4 +1,5 @@
 ﻿using DlxLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -7,13 +8,17 @@ namespace PentominoSolver
 {
     public static class HeuristicAlgorithm
     {
-        private static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private static readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         private static List<int> bestSolutionIndexes = new List<int>();
+
+        private static ulong currentIteration = 0;
+        private static ulong maxIteration = 0;
 
         public static (int, int[,]) Solve(List<IPentomino> pieces)
         {
             var rectangle = SolvingHelper.GenerateRectangle(pieces);
+            maxIteration = (ulong)Math.Round(Math.Pow(pieces.Sum(x => x.Orientations.Length), 3));
 
             var tempMatrix = new List<int[]>();
             for (int i = 0; i < pieces.Count; i++)
@@ -48,6 +53,9 @@ namespace PentominoSolver
         {
             if (e.RowIndexes.Count() > bestSolutionIndexes.Count)
                 bestSolutionIndexes = new List<int>(e.RowIndexes);
+
+            if (++currentIteration > maxIteration)
+                cancellationTokenSource.Cancel();
 
             // todo ograniczenie czasowe/iteracyjne
         }

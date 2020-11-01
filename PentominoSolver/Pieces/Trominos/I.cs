@@ -28,9 +28,6 @@ namespace PentominoSolver.Trominos
             }
         }
 
-        public IPiece Clone()
-        {
-            return new I();
-        }
+        public string Type => "Tromino.I";
     }
 }

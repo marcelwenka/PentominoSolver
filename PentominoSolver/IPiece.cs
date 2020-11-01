@@ -9,5 +9,7 @@ namespace PentominoSolver
     public interface IPiece
     {
         int[][,] Orientations { get; }
+
+        string Type { get; }
     }
 }
