@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PentominoSolver
 {
@@ -40,7 +38,7 @@ namespace PentominoSolver
             return rows;
         }
 
-        public static int[,] ConvertToArray(List<int[]> list)
+        public static int[,] ConvertToArray(this List<int[]> list)
         {
             if (list == null || !list.Any())
                 return null;
@@ -56,9 +54,64 @@ namespace PentominoSolver
             return array;
         }
 
-        public static int[,] GenerateRectangle(List<IPentomino> pieces)
+        public static int[,] RemoveEmptyColumns(int[,] matrix)
         {
-            var area = pieces.Count() * 5;
+            var columnsToRemove = new List<int>();
+
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                var shouldRemove = true;
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                {
+                    if (matrix[j, i] == 1)
+                    {
+                        shouldRemove = false;
+                        break;
+                    }
+                }
+                if (shouldRemove)
+                    columnsToRemove.Add(i);
+            }
+
+            if (!columnsToRemove.Any())
+                return matrix;
+
+            int[,] result = new int[matrix.GetLength(0), matrix.GetLength(1) - columnsToRemove.Count];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0, k = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (j == columnsToRemove[k])
+                    {
+                        k++;
+                        continue;
+                    }
+
+                    result[i, j - k] = matrix[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        public static void PrintDlxMatrix(int[,] matrix)
+        {
+            var list = new List<int[]>();
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                var tab = new int[matrix.GetLength(1)];
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    tab[j] = matrix[i, j];
+                list.Add(tab);
+            }
+            var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            System.IO.File.WriteAllLines(userPath + "Desktop/file.txt", list.Select(x => string.Join(",", x)));
+        }
+
+        public static int[,] GenerateRectangle(List<PentominoQuantity> pieces)
+        {
+            var area = pieces.Sum(x => x.Quantity) * 5;
             var dim1 = 1;
             var dim2 = area;
 

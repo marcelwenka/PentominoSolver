@@ -26,7 +26,5 @@ namespace PentominoSolver
                 };
             }
         }
-
-        public string Type => "Domino";
     }
 }

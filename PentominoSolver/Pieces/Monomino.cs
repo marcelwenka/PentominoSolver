@@ -21,7 +21,5 @@ namespace PentominoSolver
                 };
             }
         }
-
-        public string Type => "Monomino";
     }
 }

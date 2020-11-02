@@ -27,7 +27,5 @@ namespace PentominoSolver.Trominos
                 };
             }
         }
-
-        public string Type => "Tromino.I";
     }
 }

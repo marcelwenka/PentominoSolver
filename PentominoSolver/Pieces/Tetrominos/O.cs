@@ -22,7 +22,5 @@ namespace PentominoSolver.Tetrominos
                 };
             }
         }
-
-        public string Type => "Tetromino.O";
     }
 }

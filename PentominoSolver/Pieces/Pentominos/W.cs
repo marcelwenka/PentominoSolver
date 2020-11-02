@@ -114,7 +114,5 @@ namespace PentominoSolver.Pentominos
                 };
             }
         }
-
-        public string Type => "W";
     }
 }

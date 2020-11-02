@@ -11,18 +11,21 @@ namespace PentominoSolver
         private static readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         private static List<int> bestSolutionIndexes = new List<int>();
+        private static bool perfectSolutionFound = false;
 
         private static ulong currentIteration = 0;
         private static ulong maxIteration = 0;
 
-        public static (int, int[,]) Solve(List<IPentomino> pieces)
+        public static (int, int[,]) Solve(List<PentominoQuantity> pieces)
         {
+            var piecesCount = pieces.Sum(x => x.Quantity);
             var rectangle = SolvingHelper.GenerateRectangle(pieces);
-            maxIteration = (ulong)Math.Round(Math.Pow(pieces.Sum(x => x.Orientations.Length), 3));
+            maxIteration = (ulong)Math.Round(Math.Pow(pieces.Sum(x => x.Pentomino.Orientations.Length * x.Quantity), 3));
 
             var tempMatrix = new List<int[]>();
-            for (int i = 0; i < pieces.Count; i++)
-                tempMatrix.AddRange(SolvingHelper.CreateRows(pieces[i], rectangle, pieces.Count, i));
+            for (int i = 0, j = 0; i < pieces.Count; i++)
+                for (int k = 0; k < pieces[i].Quantity; j++, k++)
+                    tempMatrix.AddRange(SolvingHelper.CreateRows(pieces[i].Pentomino, rectangle, piecesCount, j));
 
             var matrix = SolvingHelper.ConvertToArray(tempMatrix);
             if (matrix == null)
@@ -33,13 +36,13 @@ namespace PentominoSolver
             dlx.SearchStep += DlxSearchStep;
             dlx.Solve(matrix).ToList();
 
-            var pieceNumber = 0;
+            var pieceNumber = 1;
             foreach (var index in bestSolutionIndexes)
             {
-                for (int i = pieces.Count; i < matrix.GetLength(1); i++)
+                for (int i = piecesCount; i < matrix.GetLength(1); i++)
                 {
                     if (matrix[index, i] == 1)
-                        rectangle[(i - pieces.Count) / rectangle.GetLength(1), (i - pieces.Count) % rectangle.GetLength(1)] = pieceNumber;
+                        rectangle[(i - piecesCount) / rectangle.GetLength(1), (i - piecesCount) % rectangle.GetLength(1)] = pieceNumber;
                 }
                 pieceNumber++;
             }
@@ -62,6 +65,7 @@ namespace PentominoSolver
 
         private static void DlxSolutionFound(object sender, SolutionFoundEventArgs e)
         {
+            perfectSolutionFound = true;
             cancellationTokenSource.Cancel();
         }
     }

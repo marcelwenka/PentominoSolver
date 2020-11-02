@@ -37,7 +37,5 @@ namespace PentominoSolver.Trominos
                 };
             }
         }
-
-        public string Type => "Tromino.L";
     }
 }

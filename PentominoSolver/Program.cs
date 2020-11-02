@@ -2,32 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace PentominoSolver
 {
     class Program
     {
         private readonly static List<IPentomino> pieceTypes = new List<IPentomino>()
-        {
-            new F(),
-            new Fp(),
-            new I(),
-            new L(),
-            new Lp(),
-            new N(),
-            new Np(),
-            new P(),
-            new Pp(),
-            new T(),
-            new U(),
-            new V(),
-            new W(),
-            new X(),
-            new Y(),
-            new Yp(),
-            new Z(),
-            new Zp()
-        };
+            { new F(), new Fp(), new I(), new L(), new Lp(), new N(), new Np(), new P(), new Pp(), new T(), new U(), new V(), new W(), new X(), new Y(), new Yp(), new Z(), new Zp() };
 
         static void Main()
         {
@@ -68,57 +50,71 @@ namespace PentominoSolver
             {
                 for (int j = 0; j < rectangle.GetLength(1); j++)
                 {
-                    Console.ForegroundColor = colors[rectangle[i, j] % colors.Count()];
+                    Console.ForegroundColor = rectangle[i, j] == 0 ? ConsoleColor.Black : colors[rectangle[i, j] % colors.Count()];
                     Console.Write("x ");
                 }
                 Console.WriteLine();
             }
         }
 
-        private static List<IPentomino> GetPieces()
+        private static List<PentominoQuantity> GetPieces()
         {
             while (true)
             {
                 Console.WriteLine("Specify the number of pieces to generate or the number of individual pieces (delimited with commas):");
 
                 var input = Console.ReadLine();
-                var numbers = input.Split(',');
 
-                if (numbers.Length == 18)
-                {
-                    var pieces = new List<IPentomino>();
-
-                    for (int i = 0; i < 18; i++)
-                    {
-                        if (int.TryParse(numbers[i], out var number) && number >= 0)
-                        {
-                            for (int j = 0; j < number; j++)
-                                pieces.Add(pieceTypes[i]);
-                        }
-                        else
-                        {
-                            pieces.Clear();
-                            break;
-                        }
-                    }
-
-                    if (pieces.Count >= 1)
-                        return pieces;
-                }
+                if (TryParseNumbers(input, ',', out var quantities) && quantities.Count == pieceTypes.Count && quantities.Any(x => x > 0))
+                    return GeneratePieces(quantities);
                 else if (int.TryParse(input, out var count) && count >= 1)
-                {
                     return GeneratePieces(count);
-                }
             }
         }
 
-        private static List<IPentomino> GeneratePieces(int count)
+        private static bool TryParseNumbers(string input, char delimiter, out List<uint> list)
         {
-            var pieces = new List<IPentomino>();
+            list = new List<uint>();
+            var numberStrings = input.Split(delimiter);
+            foreach (var numberString in numberStrings)
+            {
+                if (uint.TryParse(numberString, out var number))
+                    list.Add(number);
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static List<PentominoQuantity> GeneratePieces(List<uint> quantities)
+        {
+            if (quantities.Count != pieceTypes.Count)
+                throw new ArgumentException("Unexpected error. Quantities length must be the same as the number of different pieces.");
+
+            var pieces = pieceTypes
+                .Select(x => new PentominoQuantity(x, 0))
+                .ToList();
+
+            for (int i = 0; i < quantities.Count; i++)
+                pieces[i].Quantity = (int)quantities[i];
+
+            return pieces
+                .Where(x => x.Quantity > 0)
+                .ToList();
+        }
+
+        private static List<PentominoQuantity> GeneratePieces(int count)
+        {
+            var pieces = pieceTypes
+                .ToDictionary(x => x, y => 0);
             var rand = new Random();
             for (int i = 0; i < count; i++)
-                pieces.Add(pieceTypes[rand.Next(pieceTypes.Count())]);
-            return pieces;
+                pieces[pieceTypes[rand.Next(pieceTypes.Count())]]++;
+            return pieces
+                .Select(x => new PentominoQuantity(x.Key, x.Value))
+                .Where(x => x.Quantity > 0)
+                .ToList();
         }
     }
 }

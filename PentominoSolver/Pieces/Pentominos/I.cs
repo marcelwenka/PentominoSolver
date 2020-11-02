@@ -93,7 +93,5 @@ namespace PentominoSolver.Pentominos
                 };
             }
         }
-
-        public string Type => "Pentomino.I";
     }
 }
