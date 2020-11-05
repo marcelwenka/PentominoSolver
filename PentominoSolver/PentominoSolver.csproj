@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputHelper.cs" />
     <Compile Include="PentominoQuantity.cs" />
     <Compile Include="SolvingHelper.cs" />
     <Compile Include="IPentomino.cs" />
