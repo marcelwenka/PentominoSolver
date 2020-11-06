@@ -8,6 +8,6 @@ namespace PentominoSolver
 {
     public interface IPentomino : IPiece
     {
-        List<(int CutLength, List<IPiece> Pieces)> Cuts { get; }
+
     }
 }

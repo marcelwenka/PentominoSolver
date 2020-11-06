@@ -8,6 +8,8 @@ namespace PentominoSolver.Pentominos
 {
     public class U : IPentomino
     {
+        public int Size => 5;
+
         public int[][,] Orientations
         {
             get

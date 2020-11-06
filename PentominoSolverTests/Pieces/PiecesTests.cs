@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PentominoSolver.Pentominos;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PentominoSolver.Pentominos.Tests
 {
@@ -12,8 +8,8 @@ namespace PentominoSolver.Pentominos.Tests
     public class PiecesTests
     {
         [TestMethod()]
-        [DynamicData(nameof(GetTestData))]
-        public void OrientationsTest(List<IPiece> pieces)
+        [DynamicData(nameof(GetPieces))]
+        public void OrientationsTest(List<IPiece> pieces, int _)
         {
             var allOrientations = pieces
                 .SelectMany(x => x.Orientations)
@@ -34,18 +30,41 @@ namespace PentominoSolver.Pentominos.Tests
         }
 
         [TestMethod()]
-        [DynamicData(nameof(GetTestData))]
-        public void AreasTest(List<IPiece> pieces)
+        [DynamicData(nameof(GetPieces))]
+        public void AreaTest(List<IPiece> pieces, int size)
+        {
+            foreach (var piece in pieces)
+                foreach (var orientation in piece.Orientations)
+                    Assert.AreEqual(size, orientation.Cast<int>().Sum());
+        }
+
+        [TestMethod()]
+        [DynamicData(nameof(GetPieces))]
+        public void SizeTest(List<IPiece> pieces, int _)
         {
             var allOrientations = pieces
                 .SelectMany(x => x.Orientations)
                 .ToList();
 
-            foreach (var orientation in allOrientations)
-                Assert.AreEqual(5, orientation.Cast<int>().Sum());
+            foreach (var piece in pieces)
+                foreach (var orientation in piece.Orientations)
+                    Assert.AreEqual(piece.Size, orientation.Cast<int>().Sum());
         }
 
-        public static IEnumerable<object[]> GetTestData
+        [TestMethod()]
+        [DynamicData(nameof(GetPieces))]
+        public void CutSizesTest(List<IPiece> pieces, int _)
+        {
+            var allOrientations = pieces
+                .SelectMany(x => x.Orientations)
+                .ToList();
+
+            foreach (var piece in pieces)
+                foreach (var cut in piece.Cuts)
+                    Assert.AreEqual(piece.Size, cut.Pieces.Sum(x => x.Size));
+        }
+
+        public static IEnumerable<object[]> GetPieces
         {
             get
             {
@@ -54,25 +73,61 @@ namespace PentominoSolver.Pentominos.Tests
                     new object[] {
                         new List<IPiece>
                         {
-                            new F(),
-                            new Fp(),
-                            new I(),
-                            new L(),
-                            new Lp(),
-                            new N(),
-                            new Np(),
-                            new P(),
-                            new Pp(),
-                            new T(),
-                            new U(),
-                            new V(),
-                            new W(),
-                            new X(),
-                            new Y(),
-                            new Yp(),
-                            new Z(),
-                            new Zp()
-                        }
+                            new Pentominos.F(),
+                            new Pentominos.Fp(),
+                            new Pentominos.I(),
+                            new Pentominos.L(),
+                            new Pentominos.Lp(),
+                            new Pentominos.N(),
+                            new Pentominos.Np(),
+                            new Pentominos.P(),
+                            new Pentominos.Pp(),
+                            new Pentominos.T(),
+                            new Pentominos.U(),
+                            new Pentominos.V(),
+                            new Pentominos.W(),
+                            new Pentominos.X(),
+                            new Pentominos.Y(),
+                            new Pentominos.Yp(),
+                            new Pentominos.Z(),
+                            new Pentominos.Zp()
+                        },
+                        5
+                    },
+                    new object[] {
+                        new List<IPiece>
+                        {
+                            new Tetrominos.I(),
+                            new Tetrominos.J(),
+                            new Tetrominos.L(),
+                            new Tetrominos.O(),
+                            new Tetrominos.S(),
+                            new Tetrominos.T(),
+                            new Tetrominos.Z()
+                        },
+                        4
+                    },
+                    new object[] {
+                        new List<IPiece>
+                        {
+                            new Trominos.I(),
+                            new Trominos.L()
+                        },
+                        3
+                    },
+                    new object[] {
+                        new List<IPiece>
+                        {
+                            new Domino(),
+                        },
+                        2
+                    },
+                    new object[] {
+                        new List<IPiece>
+                        {
+                            new Monomino(),
+                        },
+                        1
                     }
                 };
             }

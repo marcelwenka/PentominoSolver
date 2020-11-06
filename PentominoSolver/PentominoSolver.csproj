@@ -50,13 +50,13 @@
   <ItemGroup>
     <Compile Include="InputHelper.cs" />
     <Compile Include="PentominoQuantity.cs" />
+    <Compile Include="Pieces\IPentomino.cs" />
+    <Compile Include="Pieces\IPiece.cs" />
     <Compile Include="SolvingHelper.cs" />
-    <Compile Include="IPentomino.cs" />
-    <Compile Include="Pieces\Monomino.cs" />
+    <Compile Include="Pieces\Monominos\Monomino.cs" />
     <Compile Include="HeuristicAlgorithm.cs" />
     <Compile Include="ExactAlgorithm.cs" />
-    <Compile Include="IPiece.cs" />
-    <Compile Include="Pieces\Domino.cs" />
+    <Compile Include="Pieces\Dominos\Domino.cs" />
     <Compile Include="Pieces\Trominos\I.cs" />
     <Compile Include="Pieces\Trominos\L.cs" />
     <Compile Include="Pieces\Tetrominos\O.cs" />

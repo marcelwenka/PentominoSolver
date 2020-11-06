@@ -8,6 +8,8 @@ namespace PentominoSolver.Tetrominos
 {
     public class I : IPiece
     {
+        public int Size => 4;
+
         public int[][,] Orientations
         {
             get
@@ -25,6 +27,51 @@ namespace PentominoSolver.Tetrominos
                     {
                         { 1, 1, 1, 1 }
                     }
+                };
+            }
+        }
+
+        public List<(int, List<IPiece>)> Cuts
+        {
+            get
+            {
+                return new List<(int, List<IPiece>)>()
+                {
+                    (
+                        1,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Trominos.I()
+                        }
+                    ),
+                    (
+                        1,
+                        new List<IPiece>()
+                        {
+                            new Domino(),
+                            new Domino(),
+                        }
+                    ),
+                    (
+                        2,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Domino()
+                        }
+                    ),
+                    (
+                        3,
+                        new List<IPiece>()
+                        {
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino(),
+                            new Monomino()
+                        }
+                    )
                 };
             }
         }

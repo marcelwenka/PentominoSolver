@@ -7,7 +7,7 @@ namespace PentominoSolver
 {
     public static class ExactAlgorithm
     {
-        public static (int, int[,]) Solve(List<PentominoQuantity> pentominos)
+        public static (int, List<int[,]>) Solve(List<PentominoQuantity> pentominos)
         {
             var rectangle = SolvingHelper.GenerateRectangle(pentominos);
             int cutLength = 0;
@@ -15,6 +15,7 @@ namespace PentominoSolver
             while (true)
             {
                 var currentPiecesCombinations = GeneratePiecesWithCuts(pentominos, cutLength);
+                var results = new List<int[,]>();
 
                 foreach (var currentPiecesCombination in currentPiecesCombinations)
                 {
@@ -27,9 +28,9 @@ namespace PentominoSolver
                         continue;
 
                     var dlx = new Dlx();
-                    var solution = dlx.Solve(matrix).FirstOrDefault();
+                    var solutions = dlx.Solve(matrix).ToList();
 
-                    if (solution != null)
+                    foreach (var solution in solutions)
                     {
                         var pieceNumber = 1;
                         foreach (var index in solution.RowIndexes)
@@ -42,9 +43,12 @@ namespace PentominoSolver
                             pieceNumber++;
                         }
 
-                        return (cutLength, rectangle);
+                        results.Add((int[,])rectangle.Clone());
                     }
                 }
+
+                if (results.Any())
+                    return (cutLength, results);
 
                 cutLength++;
             }

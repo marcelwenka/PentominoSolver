@@ -8,6 +8,8 @@ namespace PentominoSolver
 {
     public class Monomino : IPiece
     {
+        public int Size => 1;
+
         public int[][,] Orientations
         {
             get
@@ -19,6 +21,14 @@ namespace PentominoSolver
                         { 1 }
                     }
                 };
+            }
+        }
+
+        public List<(int, List<IPiece>)> Cuts
+        {
+            get
+            {
+                return new List<(int, List<IPiece>)>();
             }
         }
     }

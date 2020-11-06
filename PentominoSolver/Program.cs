@@ -20,22 +20,20 @@ namespace PentominoSolver
 
             foreach (var problem in problems)
             {
-                int n = 0;
-                int[,] rectangle = null;
-
                 if (problem.Algorithm == "e")
-                    (n, rectangle) = ExactAlgorithm.Solve(problem.PentominoQuantities);
-                else if (problem.Algorithm == "h")
-                    (n, rectangle) = HeuristicAlgorithm.Solve(problem.PentominoQuantities);
+                {
+                    var (n, rectangles) = ExactAlgorithm.Solve(problem.PentominoQuantities);
 
-                if (rectangle != null)
-                {
-                    Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {n}. First solution:");
-                    PrintSolution(rectangle);
+                    Console.WriteLine($"Found {rectangles.Count} exact solutions with the length of cuts needed to solve the problem equal to {n}. First solution:");
+                    PrintSolution(rectangles.FirstOrDefault());
+
                 }
-                else
+                else if (problem.Algorithm == "h")
                 {
-                    Console.WriteLine("There are no solutions.");
+                    var (n, rectangle) = HeuristicAlgorithm.Solve(problem.PentominoQuantities);
+
+                    Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {n}. Solution:");
+                    PrintSolution(rectangle);
                 }
             }
 
@@ -44,6 +42,9 @@ namespace PentominoSolver
 
         private static void PrintSolution(int[,] rectangle)
         {
+            if (rectangle == null || rectangle.Length == 0)
+                Console.WriteLine("No solution found.");
+
             var colors = Enum.GetValues(typeof(ConsoleColor)).OfType<ConsoleColor>().Except(new List<ConsoleColor>() { ConsoleColor.Black }).ToList();
             for (int i = 0; i < rectangle.GetLength(0); i++)
             {

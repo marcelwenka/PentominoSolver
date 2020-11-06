@@ -9,5 +9,9 @@ namespace PentominoSolver
     public interface IPiece
     {
         int[][,] Orientations { get; }
+
+        List<(int CutLength, List<IPiece> Pieces)> Cuts { get; }
+
+        int Size { get; }
     }
 }

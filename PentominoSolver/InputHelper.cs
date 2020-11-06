@@ -9,7 +9,7 @@ namespace PentominoSolver
     public static class InputHelper
     {
         private readonly static List<IPentomino> pieceTypes = new List<IPentomino>()
-            { new F(), new Fp(), new I(), new L(), new Lp(), new N(), new Np(), new P(), new Pp(), new T(), new U(), new V(), new W(), new X(), new Y(), new Yp(), new Z(), new Zp() };
+            { new I(), new F(), new Fp(), new Lp(), new L(), new Pp(), new P(), new N(), new Np(), new T(), new U(), new V(), new W(), new X(), new Y(), new Yp(), new Zp(), new Z() };
 
         public static List<(string, List<PentominoQuantity>)> ReadInput()
         {
