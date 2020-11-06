@@ -7,15 +7,15 @@ namespace PentominoSolver
 {
     public static class ExactAlgorithm
     {
-        public static (int, List<int[,]>) Solve(List<PentominoQuantity> pentominos)
+        public static (int, int, int[,]) Solve(List<PentominoQuantity> pentominos)
         {
             var rectangle = SolvingHelper.GenerateRectangle(pentominos);
             int cutLength = 0;
+            int resultsCount = 0;
 
             while (true)
             {
                 var currentPiecesCombinations = GeneratePiecesWithCuts(pentominos, cutLength);
-                var results = new List<int[,]>();
 
                 foreach (var currentPiecesCombination in currentPiecesCombinations)
                 {
@@ -29,11 +29,10 @@ namespace PentominoSolver
 
                     var dlx = new Dlx();
                     var solutions = dlx.Solve(matrix).ToList();
-
-                    foreach (var solution in solutions)
+                    if (solutions.Any())
                     {
                         var pieceNumber = 1;
-                        foreach (var index in solution.RowIndexes)
+                        foreach (var index in solutions.First().RowIndexes)
                         {
                             for (int i = currentPiecesCombination.Count; i < matrix.GetLength(1); i++)
                             {
@@ -43,15 +42,31 @@ namespace PentominoSolver
                             pieceNumber++;
                         }
 
-                        results.Add((int[,])rectangle.Clone());
+                        var solutionRepetitions = currentPiecesCombination
+                            .GroupBy(x => x.GetType().FullName)
+                            .Select(x => Factorial(x.ToList().Count))
+                            .Aggregate((x, y) => x * y);
+
+                        resultsCount += solutions.Count / solutionRepetitions;
                     }
                 }
 
-                if (results.Any())
-                    return (cutLength, results);
+                if (resultsCount > 0)
+                    return (cutLength, resultsCount, rectangle);
 
                 cutLength++;
             }
+        }
+
+        private static int Factorial(int n)
+        {
+            int result = 1;
+            while (n != 1)
+            {
+                result = result * n;
+                n = n - 1;
+            }
+            return result;
         }
 
         private static List<List<IPiece>> GeneratePiecesWithCuts(List<PentominoQuantity> pentominos, int targetCutLength)

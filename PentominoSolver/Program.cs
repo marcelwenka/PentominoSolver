@@ -22,18 +22,22 @@ namespace PentominoSolver
             {
                 if (problem.Algorithm == "e")
                 {
-                    var (n, rectangles) = ExactAlgorithm.Solve(problem.PentominoQuantities);
+                    var (cutLength, solutionsCount, rectangle) = ExactAlgorithm.Solve(problem.PentominoQuantities);
 
-                    Console.WriteLine($"Found {rectangles.Count} exact solutions with the length of cuts needed to solve the problem equal to {n}. First solution:");
-                    PrintSolution(rectangles.FirstOrDefault());
+                    Console.WriteLine("Optimal algorithm");
+                    Console.WriteLine($"Found {solutionsCount} exact solutions with the length of cuts needed to solve the problem equal to {cutLength}. First solution:");
+                    PrintSolution(rectangle);
+                    Console.WriteLine();
 
                 }
                 else if (problem.Algorithm == "h")
                 {
-                    var (n, rectangle) = HeuristicAlgorithm.Solve(problem.PentominoQuantities);
+                    var (cutLength, rectangle) = HeuristicAlgorithm.Solve(problem.PentominoQuantities);
 
-                    Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {n}. Solution:");
+                    Console.WriteLine("Heuristic algorithm");
+                    Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {cutLength}. Solution:");
                     PrintSolution(rectangle);
+                    Console.WriteLine();
                 }
             }
 
