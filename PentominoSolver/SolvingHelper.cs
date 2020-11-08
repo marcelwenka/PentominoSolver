@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PentominoSolver.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -109,7 +110,7 @@ namespace PentominoSolver
             System.IO.File.WriteAllLines(userPath + "Desktop/file.txt", list.Select(x => string.Join(",", x)));
         }
 
-        public static int[,] GenerateRectangle(List<PentominoQuantity> pieces)
+        public static int[,] GenerateRectangle(List<PieceQuantity> pieces)
         {
             var area = pieces.Sum(x => x.Quantity) * 5;
             var dim1 = 1;

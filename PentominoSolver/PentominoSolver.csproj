@@ -49,8 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InputHelper.cs" />
-    <Compile Include="PentominoQuantity.cs" />
-    <Compile Include="Pieces\IPentomino.cs" />
+    <Compile Include="PieceQuantity.cs" />
     <Compile Include="Pieces\IPiece.cs" />
     <Compile Include="SolvingHelper.cs" />
     <Compile Include="Pieces\Monominos\Monomino.cs" />

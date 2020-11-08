@@ -1,4 +1,4 @@
-﻿using PentominoSolver.Pentominos;
+﻿using PentominoSolver.Pieces.Pentominos;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +12,7 @@ namespace PentominoSolver
     {
         static void Main()
         {
-            List<(string Algorithm, List<PentominoQuantity> PentominoQuantities)> problems;
+            List<(string Algorithm, List<PieceQuantity> PieceQuantities)> problems;
             
             problems = InputHelper.ReadFile("input.txt");
 
@@ -26,12 +26,12 @@ namespace PentominoSolver
                 {
                     Console.WriteLine("OPTIMAL ALGORITHM");
                     Console.Write("Pieces: ");
-                    foreach (var pentominoQuantity in problem.PentominoQuantities)
-                        Console.Write($"{pentominoQuantity.Pentomino.GetType().Name}: {pentominoQuantity.Quantity}, ");
+                    foreach (var pentominoQuantity in problem.PieceQuantities)
+                        Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
                     Console.WriteLine();
                     Console.WriteLine("Solving...");
 
-                    var (cutLength, solutionsCount, rectangle) = ExactAlgorithm.Solve(problem.PentominoQuantities);
+                    var (cutLength, solutionsCount, rectangle) = ExactAlgorithm.Solve(problem.PieceQuantities);
 
                     Console.WriteLine($"Found {solutionsCount} exact solutions with the length of cuts needed to solve the problem equal to {cutLength}. First solution:");
                     PrintSolution(rectangle);
@@ -41,12 +41,12 @@ namespace PentominoSolver
                 {
                     Console.WriteLine("HEURISTIC ALGORITHM");
                     Console.Write("Pieces: ");
-                    foreach (var pentominoQuantity in problem.PentominoQuantities)
-                        Console.Write($"{pentominoQuantity.Pentomino.GetType().Name}: {pentominoQuantity.Quantity}, ");
+                    foreach (var pentominoQuantity in problem.PieceQuantities)
+                        Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
                     Console.WriteLine();
                     Console.WriteLine("Solving...");
 
-                    var (cutLength, rectangle) = HeuristicAlgorithm.Solve(problem.PentominoQuantities);
+                    var (cutLength, rectangle) = HeuristicAlgorithm.Solve(problem.PieceQuantities);
 
                     Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {cutLength}. Solution:");
                     PrintSolution(rectangle);

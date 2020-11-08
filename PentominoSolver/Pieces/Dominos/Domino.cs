@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PentominoSolver
+namespace PentominoSolver.Pieces.Dominos
 {
     public class Domino : IPiece
     {
@@ -39,8 +39,8 @@ namespace PentominoSolver
                         1,
                         new List<IPiece>()
                         {
-                            new Monomino(),
-                            new Monomino()
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino()
                         }
                     )
                 };

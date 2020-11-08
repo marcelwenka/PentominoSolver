@@ -1,4 +1,5 @@
 ﻿using DlxLib;
+using PentominoSolver.Pieces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,21 @@ namespace PentominoSolver
         private static ulong currentIteration;
         private static ulong maxIteration;
 
-        public static (int, int[,]) Solve(List<PentominoQuantity> pentominoQuantities)
+        public static (int, int[,]) Solve(List<PieceQuantity> pieceQuantities)
         {
             cancellationTokenSource = new CancellationTokenSource();
             bestSolutionIndexes = new List<int>();
             currentIteration = 0;
             maxIteration = 0;
 
-            var piecesCount = pentominoQuantities.Sum(x => x.Quantity);
-            var rectangle = SolvingHelper.GenerateRectangle(pentominoQuantities);
-            maxIteration = (ulong)Math.Round(Math.Pow(pentominoQuantities.Sum(x => x.Pentomino.Orientations.Length * x.Quantity), 3));
+            var piecesCount = pieceQuantities.Sum(x => x.Quantity);
+            var rectangle = SolvingHelper.GenerateRectangle(pieceQuantities);
+            maxIteration = (ulong)Math.Round(Math.Pow(pieceQuantities.Sum(x => x.Piece.Orientations.Length * x.Quantity), 3));
 
             var tempMatrix = new List<int[]>();
-            for (int i = 0, j = 0; i < pentominoQuantities.Count; i++)
-                for (int k = 0; k < pentominoQuantities[i].Quantity; j++, k++)
-                    tempMatrix.AddRange(SolvingHelper.CreateRows(pentominoQuantities[i].Pentomino, rectangle, piecesCount, j));
+            for (int i = 0, j = 0; i < pieceQuantities.Count; i++)
+                for (int k = 0; k < pieceQuantities[i].Quantity; j++, k++)
+                    tempMatrix.AddRange(SolvingHelper.CreateRows(pieceQuantities[i].Piece, rectangle, piecesCount, j));
 
             var matrix = SolvingHelper.ConvertToArray(tempMatrix);
             if (matrix == null)
@@ -41,12 +42,12 @@ namespace PentominoSolver
             dlx.SearchStep += DlxSearchStep;
             dlx.Solve(matrix).ToList();
 
-            List<IPiece> pieces = pentominoQuantities
+            List<IPiece> pieces = pieceQuantities
                 .SelectMany(x =>
                 {
-                    var list = new List<IPentomino>();
+                    var list = new List<IPiece>();
                     for (int i = 0; i < x.Quantity; i++)
-                        list.Add(x.Pentomino);
+                        list.Add(x.Piece);
                     return list;
                 })
                 .Cast<IPiece>()
@@ -58,7 +59,7 @@ namespace PentominoSolver
                 {
                     if (matrix[index, i] == 1)
                     {
-                        if (!pieces.Remove(GetPiece(pentominoQuantities, i)))
+                        if (!pieces.Remove(GetPiece(pieceQuantities, i)))
                             throw new InvalidOperationException("Internal error. Could not find piece to remove.");
                         break;
                     }
@@ -181,15 +182,15 @@ namespace PentominoSolver
             return false;
         }
 
-        private static IPentomino GetPiece(List<PentominoQuantity> pieces, int i)
+        private static IPiece GetPiece(List<PieceQuantity> pieceQuantities, int i)
         {
             var index = 0;
-            foreach (var piece in pieces)
+            foreach (var pieceQuantity in pieceQuantities)
             {
-                if (i < index + piece.Quantity)
-                    return piece.Pentomino;
+                if (i < index + pieceQuantity.Quantity)
+                    return pieceQuantity.Piece;
                 else
-                    index += piece.Quantity;
+                    index += pieceQuantity.Quantity;
             }
 
             throw new InvalidOperationException("Internal error. Index of piece out of range.");

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PentominoSolver.Pentominos.Tests
+namespace PentominoSolver.Pieces.Tests
 {
     [TestClass()]
     public class PiecesTests
@@ -118,14 +118,14 @@ namespace PentominoSolver.Pentominos.Tests
                     new object[] {
                         new List<IPiece>
                         {
-                            new Domino(),
+                            new Dominos.Domino(),
                         },
                         2
                     },
                     new object[] {
                         new List<IPiece>
                         {
-                            new Monomino(),
+                            new Monominos.Monomino(),
                         },
                         1
                     }

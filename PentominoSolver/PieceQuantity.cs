@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PentominoSolver.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace PentominoSolver
 {
-    public class PentominoQuantity
+    public class PieceQuantity
     {
-        public IPentomino Pentomino { get; set; }
+        public IPiece Piece { get; set; }
         public int Quantity { get; set; }
 
-        public PentominoQuantity(IPentomino pentomino, int quantity)
+        public PieceQuantity(IPiece piece, int quantity)
         {
-            Pentomino = pentomino;
+            Piece = piece;
             Quantity = quantity;
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PentominoSolver
+namespace PentominoSolver.Pieces
 {
     public interface IPiece
     {

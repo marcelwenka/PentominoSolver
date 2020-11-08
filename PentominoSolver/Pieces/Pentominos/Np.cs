@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PentominoSolver.Pentominos
+namespace PentominoSolver.Pieces.Pentominos
 {
-    public class Np : IPentomino
+    public class Np : IPiece
     {
         public int Size => 5;
 
@@ -54,7 +54,7 @@ namespace PentominoSolver.Pentominos
                         1,
                         new List<IPiece>()
                         {
-                            new Monomino(),
+                            new Monominos.Monomino(),
                             new Tetrominos.S()
                         }
                     ),
@@ -62,7 +62,7 @@ namespace PentominoSolver.Pentominos
                         1,
                         new List<IPiece>()
                         {
-                            new Domino(),
+                            new Dominos.Domino(),
                             new Trominos.L()
                         }
                     ),
@@ -70,7 +70,7 @@ namespace PentominoSolver.Pentominos
                         1,
                         new List<IPiece>()
                         {
-                            new Domino(),
+                            new Dominos.Domino(),
                             new Trominos.I()
                         }
                     ),
@@ -79,7 +79,7 @@ namespace PentominoSolver.Pentominos
                         new List<IPiece>()
                         {
                             new Tetrominos.L(),
-                            new Monomino()
+                            new Monominos.Monomino()
                         }
                     ),
                     (
@@ -87,8 +87,8 @@ namespace PentominoSolver.Pentominos
                         new List<IPiece>()
                         {
                             new Trominos.L(),
-                            new Monomino(),
-                            new Monomino()
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino()
                         }
                     ),
                     (
@@ -96,38 +96,38 @@ namespace PentominoSolver.Pentominos
                         new List<IPiece>()
                         {
                             new Trominos.I(),
-                            new Monomino(),
-                            new Monomino()
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino()
                         }
                     ),
                     (
                         2,
                         new List<IPiece>()
                         {
-                            new Domino(),
-                            new Domino(),
-                            new Monomino()
+                            new Dominos.Domino(),
+                            new Dominos.Domino(),
+                            new Monominos.Monomino()
                         }
                     ),
                     (
                         3,
                         new List<IPiece>()
                         {
-                            new Domino(),
-                            new Monomino(),
-                            new Monomino(),
-                            new Monomino()
+                            new Dominos.Domino(),
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino()
                         }
                     ),
                     (
                         4,
                         new List<IPiece>()
                         {
-                            new Monomino(),
-                            new Monomino(),
-                            new Monomino(),
-                            new Monomino(),
-                            new Monomino()
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino(),
+                            new Monominos.Monomino()
                         }
                     )
                 };
