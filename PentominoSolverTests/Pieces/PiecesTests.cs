@@ -40,6 +40,16 @@ namespace PentominoSolver.Pieces.Tests
 
         [TestMethod()]
         [DynamicData(nameof(GetPieces))]
+        public void CutPiecesTest(List<IPiece> pieces, int size)
+        {
+            foreach (var piece in pieces)
+                foreach (var cut in piece.Cuts)
+                    if (piece.GetType() != typeof(Pentominos.P) && piece.GetType() != typeof(Pentominos.Pp) && piece.GetType() != typeof(Tetrominos.O))
+                        Assert.AreEqual(cut.CutLength + 1, cut.Pieces.Count);
+        }
+
+        [TestMethod()]
+        [DynamicData(nameof(GetPieces))]
         public void SizeTest(List<IPiece> pieces, int _)
         {
             var allOrientations = pieces

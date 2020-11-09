@@ -7,16 +7,23 @@ using System.Linq;
 
 namespace PentominoSolver
 {
+    public enum Algorithm
+    {
+        Exact,
+        Heuristic
+    }
+
     public static class InputHelper
     {
         private readonly static List<IPiece> pieceTypes = new List<IPiece>()
             { new I(), new F(), new Fp(), new Lp(), new L(), new Pp(), new P(), new N(), new Np(), new T(), new U(), new V(), new W(), new X(), new Y(), new Yp(), new Zp(), new Z() };
 
-        public static List<(string, List<PieceQuantity>)> ReadInput()
+        public static List<(Algorithm, List<PieceQuantity>)> ReadInput()
         {
             List<PieceQuantity> pieces;
 
             string input;
+            Algorithm algorithm;
             while (true)
             {
                 Console.WriteLine("Specify the number of pieces to generate or a list of numbers for each piece (delimited with spaces):");
@@ -39,11 +46,15 @@ namespace PentominoSolver
                 Console.WriteLine("Type e to use the exact algorithm or h to use the heuristic algorithm.");
                 input = Console.ReadLine();
             }
+            if (input == "e")
+                algorithm = Algorithm.Exact;
+            else
+                algorithm = Algorithm.Heuristic;
 
-            return new List<(string, List<PieceQuantity>)>() { (input, pieces) };
+            return new List<(Algorithm, List<PieceQuantity>)>() { (algorithm, pieces) };
         }
 
-        public static List<(string, List<PieceQuantity>)> ReadFile(string path)
+        public static List<(Algorithm, List<PieceQuantity>)> ReadFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -51,7 +62,7 @@ namespace PentominoSolver
                 return null;
             }
 
-            var list = new List<(string, List<PieceQuantity>)>();
+            var list = new List<(Algorithm, List<PieceQuantity>)>();
             var lines = File.ReadAllLines(path);
 
             for (int line = 0; line < lines.Length; line += 3)
@@ -66,15 +77,15 @@ namespace PentominoSolver
             return list;
         }
 
-        private static (string, List<PieceQuantity>) ReadProblem(string[] lines, int line)
+        private static (Algorithm, List<PieceQuantity>) ReadProblem(string[] lines, int line)
         {
-            string algorithm;
+            Algorithm algorithm;
 
             if (lines.Length < line + 3)
             {
                 Console.WriteLine("Could not parse file.");
                 Console.WriteLine($"Not enough line arguments specified after line {line} (expected 3 and there only are {lines.Length - line}).");
-                return (null, null);
+                return (Algorithm.Exact, null);
             }
 
             if (int.TryParse(lines[line], out int problemSize))
@@ -82,20 +93,20 @@ namespace PentominoSolver
                 {
                     Console.WriteLine("Could not parse file.");
                     Console.WriteLine($"Invalid input at line {line}: {lines[line]}. Expected \"5\".");
-                    return (null, null);
+                    return (Algorithm.Exact, null);
                 }
 
             line++;
 
             if (lines[line].Trim() == "op")
-                algorithm = "e";
+                algorithm = Algorithm.Exact;
             else if (lines[line].Trim() == "hp")
-                algorithm = "h";
+                algorithm = Algorithm.Heuristic;
             else
             {
                 Console.WriteLine("Could not parse file.");
                 Console.WriteLine($"Invalid input at line {line}: {lines[line]}. Expected \"op\" or \"hp\".");
-                return (null, null);
+                return (Algorithm.Exact, null);
             }
 
             line++;
@@ -107,7 +118,7 @@ namespace PentominoSolver
 
             Console.WriteLine("Could not parse file.");
             Console.WriteLine($"Invalid input at line {line}: expected a single number or a list of numbers delimited with spaces.");
-            return (null, null);
+            return (Algorithm.Exact, null);
         }
 
         private static bool TryParseNumbers(string input, char delimiter, out List<uint> list)

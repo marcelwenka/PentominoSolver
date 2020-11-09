@@ -12,60 +12,73 @@ namespace PentominoSolver
     {
         static void Main()
         {
-            List<(string Algorithm, List<PieceQuantity> PieceQuantities)> problems;
-            
+            List<(Algorithm Algorithm, List<PieceQuantity> PieceQuantities)> problems;
+
             problems = InputHelper.ReadFile("input.txt");
 
             if (problems == null || !problems.Any())
                 problems = InputHelper.ReadInput();
 
-            var problemIndex = 0;
             foreach (var problem in problems)
             {
-                if (problem.Algorithm == "e")
+                switch (problem.Algorithm)
                 {
-                    Console.WriteLine("OPTIMAL ALGORITHM");
-                    Console.Write("Pieces: ");
-                    foreach (var pentominoQuantity in problem.PieceQuantities)
-                        Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
-                    Console.WriteLine();
-                    Console.WriteLine("Solving...");
-
-                    var (cutLength, solutionsCount, rectangle) = ExactAlgorithm.Solve(problem.PieceQuantities);
-
-                    Console.WriteLine($"Found {solutionsCount} exact solutions with the length of cuts needed to solve the problem equal to {cutLength}. First solution:");
-                    PrintSolution(rectangle);
-
-                }
-                else if (problem.Algorithm == "h")
-                {
-                    Console.WriteLine("HEURISTIC ALGORITHM");
-                    Console.Write("Pieces: ");
-                    foreach (var pentominoQuantity in problem.PieceQuantities)
-                        Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
-                    Console.WriteLine();
-                    Console.WriteLine("Solving...");
-
-                    var (cutLength, rectangle) = HeuristicAlgorithm.Solve(problem.PieceQuantities);
-
-                    Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {cutLength}. Solution:");
-                    PrintSolution(rectangle);
-                }
-                Console.WriteLine();
-
-                if (++problemIndex < problems.Count)
-                {
-                    Thread.Sleep(500);
-                    Console.WriteLine("Press enter to move on to the next problem.");
-                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
-                    for (int i = 0; i < 3; i++)
-                        Console.WriteLine();
-                }
+                    case Algorithm.Exact:
+                        HandleExactProblem(problem.PieceQuantities);
+                        break;
+                    case Algorithm.Heuristic:
+                        HandleHeuristicProblem(problem.PieceQuantities);
+                        break;
+                } 
             }
 
             Console.WriteLine("All problems processed.");
             Console.WriteLine("Press esc to exit the program.");
             while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+        }
+
+        private static void HandleExactProblem(List<PieceQuantity> pieceQuantities)
+        {
+            Console.WriteLine("OPTIMAL ALGORITHM");
+            Console.Write("Pieces: ");
+            foreach (var pentominoQuantity in pieceQuantities)
+                Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
+            Console.WriteLine();
+            Console.WriteLine("Solving...");
+
+            var (cutLength, rectangles) = ExactAlgorithm.Solve(pieceQuantities);
+
+            Console.WriteLine($"Found {rectangles.Count} exact solutions with the length of cuts needed to solve the problem equal to {cutLength}. First solution:");
+            PrintSolution(rectangles.First());
+
+            Console.WriteLine($"Type a number between 1 and {rectangles.Count} to see the corresponding solution or type 'n' to move on to the next problem.");
+            var input = "";
+            while (input != "n")
+            {
+                if (int.TryParse(input, out int number) && number >= 1 && number <= rectangles.Count)
+                    PrintSolution(rectangles[number - 1]);
+                input = Console.ReadLine();
+            }
+            Console.Clear();
+        }
+
+        private static void HandleHeuristicProblem(List<PieceQuantity> pieceQuantities)
+        {
+            Console.WriteLine("HEURISTIC ALGORITHM");
+            Console.Write("Pieces: ");
+            foreach (var pentominoQuantity in pieceQuantities)
+                Console.Write($"{pentominoQuantity.Piece.GetType().Name}: {pentominoQuantity.Quantity}, ");
+            Console.WriteLine();
+            Console.WriteLine("Solving...");
+
+            var (cutLength, rectangle) = HeuristicAlgorithm.Solve(pieceQuantities);
+
+            Console.WriteLine($"Aggregated length of cuts needed to solve the problem: {cutLength}. Solution:");
+            PrintSolution(rectangle);
+
+            Console.WriteLine("Type 'n' to move on to the next problem.");
+            while (Console.ReadLine() != "n") { }
+            Console.Clear();
         }
 
         private static void PrintSolution(int[,] rectangle)
@@ -84,6 +97,7 @@ namespace PentominoSolver
                 Console.WriteLine();
             }
             Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
         }
     }
 }

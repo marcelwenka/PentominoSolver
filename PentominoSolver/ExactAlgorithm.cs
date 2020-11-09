@@ -8,9 +8,10 @@ namespace PentominoSolver
 {
     public static class ExactAlgorithm
     {
-        public static (int, int, int[,]) Solve(List<PieceQuantity> pieceQuantities)
+        public static (int, List<int[,]>) Solve(List<PieceQuantity> pieceQuantities)
         {
             var rectangle = SolvingHelper.GenerateRectangle(pieceQuantities);
+            var results = new List<int[,]>();
             int cutLength = 0;
             int resultsCount = 0;
 
@@ -18,11 +19,28 @@ namespace PentominoSolver
             {
                 var currentPiecesCombinations = GeneratePiecesWithCuts(pieceQuantities, cutLength);
 
-                foreach (var currentPiecesCombination in currentPiecesCombinations)
+                foreach (var currentPieces in currentPiecesCombinations)
                 {
+                    var currentPiecesCount = currentPieces.Sum(x => x.Quantity);
                     var tempMatrix = new List<int[]>();
-                    for (int i = 0; i < currentPiecesCombination.Count; i++)
-                        tempMatrix.AddRange(SolvingHelper.CreateRows(currentPiecesCombination[i], rectangle, currentPiecesCombination.Count, i));
+                    var repeatedRowsDictionary = new Dictionary<int, int>();
+                    int pieceIndex = 0, repeatedRowIndex = 0, disctinctRowIndex = 0;
+                    foreach (var pieceQuantity in currentPieces)
+                    {
+                        int rowsCount = 0;
+                        for (int i = 0; i < pieceQuantity.Quantity; i++)
+                        {
+                            var rows = SolvingHelper.CreateRows(pieceQuantity.Piece, rectangle, currentPiecesCount, pieceIndex++);
+                            rowsCount = rows.Count;
+                            foreach (var row in rows)
+                            {
+                                repeatedRowsDictionary[repeatedRowIndex++] = disctinctRowIndex++;
+                                tempMatrix.Add(row);
+                            }
+                            disctinctRowIndex -= rowsCount;
+                        }
+                        disctinctRowIndex += rowsCount;
+                    }
 
                     var matrix = SolvingHelper.ConvertToArray(tempMatrix);
                     if (matrix == null)
@@ -30,30 +48,38 @@ namespace PentominoSolver
 
                     var dlx = new Dlx();
                     var solutions = dlx.Solve(matrix).ToList();
-                    if (solutions.Any())
+                    var distinctSolutionsHashSet = new HashSet<IEnumerable<int>>(new SequenceComparer<int>());
+                    foreach (var solution in solutions)
                     {
+                        if (!distinctSolutionsHashSet.Add(solution.RowIndexes.Select(x => repeatedRowsDictionary[x]).OrderBy(x => x)))
+                            continue;
+
                         var pieceNumber = 1;
-                        foreach (var index in solutions.First().RowIndexes)
+                        foreach (var rowIndex in solution.RowIndexes)
                         {
-                            for (int i = currentPiecesCombination.Count; i < matrix.GetLength(1); i++)
+                            for (int i = currentPiecesCount; i < matrix.GetLength(1); i++)
                             {
-                                if (matrix[index, i] == 1)
-                                    rectangle[(i - currentPiecesCombination.Count) / rectangle.GetLength(1), (i - currentPiecesCombination.Count) % rectangle.GetLength(1)] = pieceNumber;
+                                if (matrix[rowIndex, i] == 1)
+                                    rectangle[(i - currentPiecesCount) / rectangle.GetLength(1), (i - currentPiecesCount) % rectangle.GetLength(1)] = pieceNumber;
                             }
                             pieceNumber++;
                         }
 
-                        var solutionRepetitions = currentPiecesCombination
-                            .GroupBy(x => x.GetType().FullName)
-                            .Select(x => Factorial(x.ToList().Count))
-                            .Aggregate((x, y) => x * y);
-
-                        resultsCount += solutions.Count / solutionRepetitions;
+                        results.Add((int[,])rectangle.Clone());
                     }
+
+                    var solutionRepetitions = currentPieces
+                        .Select(x => Factorial(x.Quantity))
+                        .Aggregate((x, y) => x * y);
+
+                    if (distinctSolutionsHashSet.Count != solutions.Count / solutionRepetitions)
+                        throw new InvalidOperationException("Internal error. Number of distinct solutions is not proper.");
+
+                    resultsCount += solutions.Count / solutionRepetitions;
                 }
 
                 if (resultsCount > 0)
-                    return (cutLength, resultsCount, rectangle);
+                    return (cutLength, results);
 
                 cutLength++;
             }
@@ -70,11 +96,17 @@ namespace PentominoSolver
             return result;
         }
 
-        private static List<List<IPiece>> GeneratePiecesWithCuts(List<PieceQuantity> pieceQuantities, int targetCutLength)
+        private static List<List<PieceQuantity>> GeneratePiecesWithCuts(List<PieceQuantity> pieceQuantities, int targetCutLength)
         {
             List<List<IPiece>> solutions = new List<List<IPiece>>();
             GeneratePiecesWithCuts(new LinkedList<PieceQuantity>(pieceQuantities).First, solutions, new List<IPiece>(), 0, -1, targetCutLength, 0);
-            return solutions;
+            return solutions
+                .Select(x =>
+                    x.GroupBy(y => y.GetType())
+                        .Select(y => new PieceQuantity(y.First(), y.Count()))
+                        .ToList()
+                )
+                .ToList();
         }
 
         private static void GeneratePiecesWithCuts(LinkedListNode<PieceQuantity> pieceQuantity, List<List<IPiece>> solutions, List<IPiece> pieces, int pieceIndex, int cutIndex, int targetCutLength, int currentCutLength)
@@ -111,6 +143,22 @@ namespace PentominoSolver
                     GeneratePiecesWithCuts(pieceQuantity, solutions, pieces, pieceIndex + 1, cutIndex, targetCutLength, currentCutLength + piece.Cuts[cutIndex].CutLength);
                     pieces.RemoveRange(pieces.Count - piece.Cuts[cutIndex].Pieces.Count, piece.Cuts[cutIndex].Pieces.Count);
                 }
+            }
+        }
+
+        class SequenceComparer<T> : IEqualityComparer<IEnumerable<T>>
+        {
+            public bool Equals(IEnumerable<T> seq1, IEnumerable<T> seq2)
+            {
+                return seq1.SequenceEqual(seq2);
+            }
+
+            public int GetHashCode(IEnumerable<T> seq)
+            {
+                int hash = 1234567;
+                foreach (T elem in seq)
+                    hash = hash * 37 + elem.GetHashCode();
+                return hash;
             }
         }
     }
