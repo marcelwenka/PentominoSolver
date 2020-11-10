@@ -72,7 +72,6 @@ namespace PentominoSolver
                 pieceNumber++;
             }
 
-            // todo uzupełnienie dziur klockami
             var cutLength = 0;
             for (int row = 0; row < rectangle.GetLength(0); row++)
             {
@@ -80,7 +79,7 @@ namespace PentominoSolver
                 {
                     if (rectangle[row,column] == 0)
                     {
-                        cutLength += PutBestPiece(pieces, rectangle, row, column, pieceNumber); // todo pick a piece or a cut with the biggest area that fits into the hole
+                        cutLength += PutBestPiece(pieces, rectangle, row, column, pieceNumber);
                         pieceNumber++;
                     }
                 }
@@ -172,7 +171,7 @@ namespace PentominoSolver
                 {
                     for (int i = 0; i < pieceOrientation.GetLength(0); i++)
                         for (int j = 0; j < pieceOrientation.GetLength(1); j++)
-                            if (pieceOrientation[i, j] == 1 && rectangle[row + i, column - offset + j] > 1)
+                            if (pieceOrientation[i, j] == 1 && rectangle[row + i, column - offset + j] >= 1)
                                 return false;
 
                     return true;
